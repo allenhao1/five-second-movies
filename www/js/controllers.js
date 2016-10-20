@@ -1,6 +1,26 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+.controller('MoviesCtrl', function($scope, Movie, $interval) {
+
+  var movies = Movie.all();
+  $scope.score = 0;
+  $scope.timer = 5;
+  var interval = 0;
+  $scope.next = function(correct) {
+    if(correct) {
+      $scope.score++;
+    }
+    $interval.cancel(interval);
+    var pos = Math.floor(Math.random() * movies.length);
+    $scope.movie = movies[pos];
+    movies.splice(pos);
+    $scope.timer = 5;
+    interval = $interval(function(){
+      $scope.timer--;
+    }, 1000, $scope.timer);
+  }
+
+})
 
 .controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
